@@ -173,39 +173,43 @@ export function ProjectManager({
               </div>
 
               <ScrollArea className="flex-1">
-                <div className="space-y-1">
+                <div className="space-y-1.5">
                   <Button
                     variant={selectedFolder === null ? "secondary" : "ghost"}
-                    className="w-full justify-start gap-2"
+                    className="w-full justify-start gap-2 h-10 px-3 hover:bg-accent transition-colors"
                     onClick={() => setSelectedFolder(null)}
                   >
-                    <Folder className="h-4 w-4" />
-                    All Snippets
+                    <Folder className="h-4 w-4 flex-shrink-0" />
+                    <span className="truncate">All Snippets</span>
                   </Button>
 
                   {folders?.map((folder) => (
-                    <div key={folder._id} className="flex items-center gap-1">
+                    <div key={folder._id} className="flex items-center gap-1 group">
                       <Button
                         variant={selectedFolder === folder._id ? "secondary" : "ghost"}
-                        className="flex-1 justify-start gap-2"
+                        className="flex-1 justify-start gap-2 h-10 px-3 hover:bg-accent transition-colors"
                         onClick={() => setSelectedFolder(folder._id)}
                       >
-                        <Folder className="h-4 w-4" />
-                        {folder.name}
+                        <Folder className="h-4 w-4 flex-shrink-0 text-primary" />
+                        <span className="truncate">{folder.name}</span>
                       </Button>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button size="sm" variant="ghost">
-                            <MoreVertical className="h-3 w-3" />
+                          <Button 
+                            size="sm" 
+                            variant="ghost" 
+                            className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <MoreVertical className="h-3.5 w-3.5" />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent>
+                        <DropdownMenuContent align="end">
                           <DropdownMenuItem
                             onClick={() => handleDeleteFolder(folder._id)}
-                            className="text-red-600"
+                            className="text-red-600 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-950/20"
                           >
                             <Trash2 className="h-4 w-4 mr-2" />
-                            Delete
+                            Delete Folder
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
@@ -235,34 +239,47 @@ export function ProjectManager({
 
               <ScrollArea className="flex-1">
                 {snippets && snippets.length > 0 ? (
-                  <div className="space-y-2">
+                  <div className="space-y-2.5">
                     {snippets.map((snippet) => (
                       <motion.div
                         key={snippet._id}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="p-4 border rounded-lg hover:bg-accent/50 transition-colors"
+                        transition={{ duration: 0.2 }}
+                        className="group relative p-4 border rounded-lg hover:border-primary/30 hover:bg-accent/30 transition-all cursor-pointer"
                       >
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-1">
-                              <FileCode className="h-4 w-4 text-primary flex-shrink-0" />
-                              <h4 className="font-medium text-sm truncate">
+                            <div className="flex items-center gap-2.5 mb-2">
+                              <div className="p-1.5 rounded-md bg-primary/10 border border-primary/20">
+                                <FileCode className="h-3.5 w-3.5 text-primary flex-shrink-0" />
+                              </div>
+                              <h4 className="font-semibold text-sm truncate tracking-tight">
                                 {snippet.title}
                               </h4>
                             </div>
-                            <p className="text-xs text-muted-foreground">
-                              {snippet.language.toUpperCase()} •{" "}
-                              {new Date(snippet._creationTime).toLocaleDateString()}
-                            </p>
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                              <span className="px-2 py-0.5 rounded-md bg-muted border border-border font-mono">
+                                {snippet.language.toUpperCase()}
+                              </span>
+                              <span>•</span>
+                              <span>
+                                {new Date(snippet._creationTime).toLocaleDateString(undefined, {
+                                  month: 'short',
+                                  day: 'numeric',
+                                  year: 'numeric'
+                                })}
+                              </span>
+                            </div>
                           </div>
-                          <div className="flex gap-2">
+                          <div className="flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
                             <Button
                               size="sm"
-                              variant="outline"
+                              variant="default"
                               onClick={() =>
                                 handleLoadSnippet(snippet.code, snippet.language)
                               }
+                              className="h-8 px-3 text-xs"
                             >
                               Load
                             </Button>
@@ -270,8 +287,9 @@ export function ProjectManager({
                               size="sm"
                               variant="ghost"
                               onClick={() => handleDeleteSnippet(snippet._id)}
+                              className="h-8 w-8 p-0 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/20"
                             >
-                              <Trash2 className="h-4 w-4 text-red-600" />
+                              <Trash2 className="h-3.5 w-3.5" />
                             </Button>
                           </div>
                         </div>
@@ -280,9 +298,12 @@ export function ProjectManager({
                   </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center h-full text-center p-8">
-                    <FileCode className="h-12 w-12 text-muted-foreground mb-4" />
-                    <p className="text-sm text-muted-foreground">
-                      No snippets yet. Save your current code to get started!
+                    <div className="p-4 rounded-2xl bg-muted/50 border border-border mb-4">
+                      <FileCode className="h-10 w-10 text-muted-foreground" />
+                    </div>
+                    <h4 className="font-semibold text-sm mb-1 tracking-tight">No snippets yet</h4>
+                    <p className="text-xs text-muted-foreground max-w-[200px]">
+                      Save your current code to get started organizing your work!
                     </p>
                   </div>
                 )}
