@@ -4,11 +4,47 @@ import { v } from "convex/values";
 import { action } from "./_generated/server";
 
 const LANGUAGE_IDS: Record<string, number> = {
+  // Original 5 languages
   python: 71,
   javascript: 63,
   java: 62,
   cpp: 54,
   c: 50,
+  
+  // Additional popular languages
+  typescript: 74,
+  ruby: 72,
+  go: 60,
+  rust: 73,
+  php: 68,
+  swift: 83,
+  kotlin: 78,
+  csharp: 51,
+  r: 80,
+  perl: 85,
+  scala: 81,
+  haskell: 61,
+  lua: 64,
+  bash: 46,
+  sql: 82,
+  assembly: 45,
+  clojure: 86,
+  cobol: 77,
+  commonlisp: 55,
+  d: 56,
+  elixir: 57,
+  erlang: 58,
+  fsharp: 87,
+  fortran: 59,
+  groovy: 88,
+  objectivec: 79,
+  ocaml: 65,
+  octave: 66,
+  pascal: 67,
+  prolog: 69,
+  racket: 88,
+  scheme: 55,
+  visualbasic: 84,
 };
 
 export const executeCode = action({

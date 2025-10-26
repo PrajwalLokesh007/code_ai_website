@@ -22,7 +22,7 @@ export const detectLanguage = action({
       messages: [
         {
           role: "system",
-          content: `You are a programming language detection expert. Analyze the provided code and identify which programming language it is written in. You must respond with ONLY ONE of these exact values: python, javascript, java, cpp, or c. Do not include any explanation or additional text.`,
+          content: `You are a programming language detection expert. Analyze the provided code and identify which programming language it is written in. You must respond with ONLY ONE of these exact values: python, javascript, typescript, java, cpp, c, csharp, go, rust, ruby, php, swift, kotlin, r, perl, scala, haskell, lua, bash, sql, assembly, clojure, cobol, commonlisp, d, elixir, erlang, fsharp, fortran, groovy, objectivec, ocaml, octave, pascal, prolog, racket, scheme, visualbasic. Do not include any explanation or additional text.`,
         },
         {
           role: "user",
@@ -36,7 +36,15 @@ export const detectLanguage = action({
     const detectedLanguage = response.choices[0]?.message?.content?.trim().toLowerCase() || "python";
     
     // Validate the response is one of our supported languages
-    const supportedLanguages = ["python", "javascript", "java", "cpp", "c"];
+    const supportedLanguages = [
+      "python", "javascript", "typescript", "java", "cpp", "c", "csharp",
+      "go", "rust", "ruby", "php", "swift", "kotlin", "r", "perl", "scala",
+      "haskell", "lua", "bash", "sql", "assembly", "clojure", "cobol",
+      "commonlisp", "d", "elixir", "erlang", "fsharp", "fortran", "groovy",
+      "objectivec", "ocaml", "octave", "pascal", "prolog", "racket", "scheme",
+      "visualbasic"
+    ];
+    
     if (supportedLanguages.includes(detectedLanguage)) {
       return detectedLanguage;
     }

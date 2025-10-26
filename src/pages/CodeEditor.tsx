@@ -15,9 +15,23 @@ import { toast } from "sonner";
 const DEFAULT_CODE: Record<string, string> = {
   python: `# Welcome to VLY.AI\nprint("Hello, World!")`,
   javascript: `// Welcome to VLY.AI\nconsole.log("Hello, World!");`,
+  typescript: `// Welcome to VLY.AI\nconsole.log("Hello, World!");`,
   java: `// Welcome to VLY.AI\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, World!");\n    }\n}`,
   cpp: `// Welcome to VLY.AI\n#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "Hello, World!" << endl;\n    return 0;\n}`,
   c: `// Welcome to VLY.AI\n#include <stdio.h>\n\nint main() {\n    printf("Hello, World!\\n");\n    return 0;\n}`,
+  csharp: `// Welcome to VLY.AI\nusing System;\n\nclass Program {\n    static void Main() {\n        Console.WriteLine("Hello, World!");\n    }\n}`,
+  go: `// Welcome to VLY.AI\npackage main\nimport "fmt"\n\nfunc main() {\n    fmt.Println("Hello, World!")\n}`,
+  rust: `// Welcome to VLY.AI\nfn main() {\n    println!("Hello, World!");\n}`,
+  ruby: `# Welcome to VLY.AI\nputs "Hello, World!"`,
+  php: `<?php\n// Welcome to VLY.AI\necho "Hello, World!";\n?>`,
+  swift: `// Welcome to VLY.AI\nprint("Hello, World!")`,
+  kotlin: `// Welcome to VLY.AI\nfun main() {\n    println("Hello, World!")\n}`,
+  bash: `# Welcome to VLY.AI\necho "Hello, World!"`,
+  r: `# Welcome to VLY.AI\nprint("Hello, World!")`,
+  lua: `-- Welcome to VLY.AI\nprint("Hello, World!")`,
+  perl: `# Welcome to VLY.AI\nprint "Hello, World!\\n";`,
+  scala: `// Welcome to VLY.AI\nobject Main extends App {\n  println("Hello, World!")\n}`,
+  haskell: `-- Welcome to VLY.AI\nmain = putStrLn "Hello, World!"`,
 };
 
 export default function CodeEditorPage() {
