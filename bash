@@ -1,1 +1,1 @@
-pnpm run dev
+npx convex dev
