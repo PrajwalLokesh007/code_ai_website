@@ -30,7 +30,7 @@ export default function Landing() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-background to-secondary/20">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-background via-secondary/10 to-background">
       {/* Header */}
       <motion.header
         initial={{ opacity: 0, y: -20 }}
@@ -70,8 +70,8 @@ export default function Landing() {
         >
           {/* Badge */}
           <motion.div variants={itemVariants} className="flex justify-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
-              <Sparkles className="h-4 w-4 text-primary" />
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/20 to-primary/10 border border-primary/30 shadow-lg">
+              <Sparkles className="h-4 w-4 text-primary animate-pulse" />
               <span className="text-sm font-medium">AI-Powered Code Execution</span>
             </div>
           </motion.div>
@@ -81,7 +81,7 @@ export default function Landing() {
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">
               Code in Any Language.
               <br />
-              <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
                 Instantly.
               </span>
             </h1>
@@ -90,6 +90,48 @@ export default function Landing() {
               <br className="hidden sm:block" />
               Write, run, and learn—all in one place.
             </p>
+          </motion.div>
+
+          {/* Hero Image/Visual */}
+          <motion.div 
+            variants={itemVariants}
+            className="relative max-w-4xl mx-auto"
+          >
+            <div className="relative rounded-2xl overflow-hidden border border-border shadow-2xl bg-card">
+              <div className="aspect-video bg-gradient-to-br from-primary/5 via-secondary/10 to-accent/5 flex items-center justify-center p-8">
+                <div className="w-full max-w-2xl space-y-4">
+                  {/* Mock Code Editor Visual */}
+                  <div className="bg-background/80 backdrop-blur-sm rounded-lg p-6 border border-border shadow-lg">
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                      <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                      <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                      <span className="ml-4 text-xs text-muted-foreground font-mono">main.py</span>
+                    </div>
+                    <div className="space-y-2 font-mono text-sm text-left">
+                      <div className="text-muted-foreground"># AI detects language automatically</div>
+                      <div className="text-foreground">
+                        <span className="text-purple-500">def</span>{" "}
+                        <span className="text-blue-500">hello_world</span>():
+                      </div>
+                      <div className="text-foreground pl-4">
+                        <span className="text-purple-500">print</span>
+                        <span className="text-yellow-500">(</span>
+                        <span className="text-green-500">"Hello, VLY.AI!"</span>
+                        <span className="text-yellow-500">)</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                    <Zap className="h-4 w-4 text-primary" />
+                    <span>Instant execution • 40+ languages • AI-powered</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* Decorative elements */}
+            <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/20 rounded-full blur-3xl"></div>
+            <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-accent/20 rounded-full blur-3xl"></div>
           </motion.div>
 
           {/* CTA Buttons */}
@@ -101,7 +143,7 @@ export default function Landing() {
               <Button
                 size="lg"
                 onClick={() => navigate("/editor")}
-                className="gap-2 text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 w-full sm:w-auto shadow-lg hover:shadow-xl transition-shadow"
+                className="gap-2 text-base sm:text-lg px-8 sm:px-10 py-6 sm:py-7 w-full sm:w-auto shadow-lg hover:shadow-xl transition-all"
               >
                 Start Coding Free
                 <ArrowRight className="h-5 w-5" />
@@ -112,7 +154,7 @@ export default function Landing() {
                 size="lg"
                 variant="outline"
                 onClick={() => navigate("/auth")}
-                className="gap-2 text-base sm:text-lg px-6 sm:px-8 py-5 sm:py-6 w-full sm:w-auto"
+                className="gap-2 text-base sm:text-lg px-8 sm:px-10 py-6 sm:py-7 w-full sm:w-auto border-2"
               >
                 <Shield className="h-5 w-5" />
                 Sign In Securely
@@ -128,49 +170,58 @@ export default function Landing() {
             <motion.div
               variants={itemVariants}
               whileHover={{ scale: 1.05, y: -5 }}
-              className="p-6 lg:p-8 rounded-2xl bg-card border border-border hover:border-primary/50 transition-all shadow-sm hover:shadow-md"
+              className="relative p-8 lg:p-10 rounded-2xl bg-gradient-to-br from-card to-card/50 border border-border hover:border-primary/50 transition-all shadow-lg hover:shadow-xl overflow-hidden group"
             >
-              <div className="flex justify-center mb-4">
-                <div className="p-3 rounded-xl bg-primary/10">
-                  <Globe className="h-8 w-8 text-primary" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-all"></div>
+              <div className="relative z-10">
+                <div className="flex justify-center mb-6">
+                  <div className="p-4 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20">
+                    <Globe className="h-10 w-10 text-primary" />
+                  </div>
                 </div>
+                <h3 className="font-bold text-xl mb-3 tracking-tight">40+ Languages</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Python, JavaScript, Java, C++, Rust, Go, and 35+ more—all in one powerful editor
+                </p>
               </div>
-              <h3 className="font-semibold text-lg mb-2">40+ Languages</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Python, JavaScript, Java, C++, Rust, Go, and 35+ more—all in one powerful editor
-              </p>
             </motion.div>
 
             <motion.div
               variants={itemVariants}
               whileHover={{ scale: 1.05, y: -5 }}
-              className="p-6 lg:p-8 rounded-2xl bg-card border border-border hover:border-primary/50 transition-all shadow-sm hover:shadow-md"
+              className="relative p-8 lg:p-10 rounded-2xl bg-gradient-to-br from-card to-card/50 border border-border hover:border-primary/50 transition-all shadow-lg hover:shadow-xl overflow-hidden group"
             >
-              <div className="flex justify-center mb-4">
-                <div className="p-3 rounded-xl bg-primary/10">
-                  <Zap className="h-8 w-8 text-primary" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-all"></div>
+              <div className="relative z-10">
+                <div className="flex justify-center mb-6">
+                  <div className="p-4 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20">
+                    <Zap className="h-10 w-10 text-primary" />
+                  </div>
                 </div>
+                <h3 className="font-bold text-xl mb-3 tracking-tight">Instant Execution</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Run your code in seconds with real-time output and lightning-fast compilation
+                </p>
               </div>
-              <h3 className="font-semibold text-lg mb-2">Instant Execution</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Run your code in seconds with real-time output and lightning-fast compilation
-              </p>
             </motion.div>
 
             <motion.div
               variants={itemVariants}
               whileHover={{ scale: 1.05, y: -5 }}
-              className="p-6 lg:p-8 rounded-2xl bg-card border border-border hover:border-primary/50 transition-all shadow-sm hover:shadow-md"
+              className="relative p-8 lg:p-10 rounded-2xl bg-gradient-to-br from-card to-card/50 border border-border hover:border-primary/50 transition-all shadow-lg hover:shadow-xl overflow-hidden group"
             >
-              <div className="flex justify-center mb-4">
-                <div className="p-3 rounded-xl bg-primary/10">
-                  <Sparkles className="h-8 w-8 text-primary" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-all"></div>
+              <div className="relative z-10">
+                <div className="flex justify-center mb-6">
+                  <div className="p-4 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20">
+                    <Sparkles className="h-10 w-10 text-primary" />
+                  </div>
                 </div>
+                <h3 className="font-bold text-xl mb-3 tracking-tight">AI Assistant</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Get intelligent explanations and debugging help powered by advanced GPT models
+                </p>
               </div>
-              <h3 className="font-semibold text-lg mb-2">AI Assistant</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Get intelligent explanations and debugging help powered by advanced GPT models
-              </p>
             </motion.div>
           </motion.div>
 
