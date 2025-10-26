@@ -78,6 +78,10 @@ export default function CodeEditorPage() {
     setError("");
   };
 
+  const handleCodeChange = (newCode: string) => {
+    setCode(newCode);
+  };
+
   const handleRun = async () => {
     if (!code.trim()) {
       toast.error("Please write some code first");
@@ -202,7 +206,7 @@ export default function CodeEditorPage() {
           transition={{ delay: 0.1 }}
           className="border-r border-border h-full overflow-hidden"
         >
-          <Editor value={code} onChange={setCode} language={language} />
+          <Editor value={code} onChange={handleCodeChange} language={language} />
         </motion.div>
 
         {/* Right: Output and AI */}
@@ -222,7 +226,7 @@ export default function CodeEditorPage() {
             transition={{ delay: 0.3 }}
             className="h-full overflow-hidden"
           >
-            <AIAssistant code={code} language={language} />
+            <AIAssistant code={code} language={language} onCodeChange={handleCodeChange} />
           </motion.div>
         </div>
       </div>
