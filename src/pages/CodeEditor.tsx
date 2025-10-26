@@ -199,12 +199,12 @@ export default function CodeEditorPage() {
         </motion.div>
 
         {/* Right: Output and AI */}
-        <div className="grid grid-rows-2 gap-0">
+        <div className="grid grid-rows-2 gap-0 h-full">
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="border-b border-border"
+            className="border-b border-border overflow-hidden"
           >
             <OutputPanel output={output} error={error} isRunning={isRunning} />
           </motion.div>
@@ -213,6 +213,7 @@ export default function CodeEditorPage() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
+            className="overflow-hidden"
           >
             <AIAssistant code={code} language={language} />
           </motion.div>
