@@ -187,24 +187,24 @@ export default function CodeEditorPage() {
       </motion.header>
 
       {/* Main Content */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-0">
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden">
         {/* Left: Editor */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.1 }}
-          className="border-r border-border"
+          className="border-r border-border h-full overflow-hidden"
         >
           <Editor value={code} onChange={setCode} language={language} />
         </motion.div>
 
         {/* Right: Output and AI */}
-        <div className="grid grid-rows-2 gap-0 h-full">
+        <div className="grid grid-rows-2 gap-0 h-full overflow-hidden">
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="border-b border-border overflow-hidden"
+            className="border-b border-border h-full overflow-hidden"
           >
             <OutputPanel output={output} error={error} isRunning={isRunning} />
           </motion.div>
@@ -213,7 +213,7 @@ export default function CodeEditorPage() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
-            className="overflow-hidden"
+            className="h-full overflow-hidden"
           >
             <AIAssistant code={code} language={language} />
           </motion.div>
