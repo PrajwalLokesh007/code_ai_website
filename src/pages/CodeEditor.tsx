@@ -186,6 +186,13 @@ export default function CodeEditorPage() {
         </div>
       </motion.header>
 
+      {/* Info Banner */}
+      <div className="bg-muted/50 border-b border-border px-8 py-2">
+        <p className="text-xs text-muted-foreground text-center">
+          ℹ️ Standard libraries only - External packages/modules are not supported in the execution environment
+        </p>
+      </div>
+
       {/* Main Content */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden">
         {/* Left: Editor */}

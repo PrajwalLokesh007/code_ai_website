@@ -244,6 +244,9 @@ export default function Landing() {
                 <span>Free to Use</span>
               </div>
             </div>
+            <div className="mt-6 text-xs text-muted-foreground/80 max-w-2xl mx-auto">
+              <p>* Standard libraries only. External packages/modules are not supported.</p>
+            </div>
           </motion.div>
         </motion.div>
       </main>
