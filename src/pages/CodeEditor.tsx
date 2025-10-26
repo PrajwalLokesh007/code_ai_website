@@ -43,6 +43,7 @@ export default function CodeEditorPage() {
   const [error, setError] = useState("");
   const [isRunning, setIsRunning] = useState(false);
   const [isDetecting, setIsDetecting] = useState(false);
+  const [aiPanelHeight, setAiPanelHeight] = useState(50); // percentage
 
   const executeCode = useAction(api.codeExecutionActions.executeCode);
   const detectLanguage = useAction(api.languageDetection.detectLanguage);
@@ -131,6 +132,28 @@ export default function CodeEditorPage() {
     toast.success("Signed out successfully");
   };
 
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const startY = e.clientY;
+    const startHeight = aiPanelHeight;
+    const containerHeight = window.innerHeight - 200; // Approximate header height
+
+    const handleMouseMove = (moveEvent: MouseEvent) => {
+      const deltaY = moveEvent.clientY - startY;
+      const deltaPercent = (deltaY / containerHeight) * 100;
+      const newHeight = Math.max(20, Math.min(80, startHeight - deltaPercent));
+      setAiPanelHeight(newHeight);
+    };
+
+    const handleMouseUp = () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+  };
+
   return (
     <div className="h-screen flex flex-col bg-background">
       {/* Header */}
@@ -209,22 +232,34 @@ export default function CodeEditorPage() {
           <Editor value={code} onChange={handleCodeChange} language={language} />
         </motion.div>
 
-        {/* Right: Output and AI */}
-        <div className="grid grid-rows-2 gap-0 h-full overflow-hidden">
+        {/* Right: Output and AI with dynamic resizing */}
+        <div className="flex flex-col h-full overflow-hidden">
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="border-b border-border h-full overflow-hidden"
+            className="border-b border-border overflow-hidden"
+            style={{ height: `${100 - aiPanelHeight}%` }}
           >
             <OutputPanel output={output} error={error} isRunning={isRunning} />
           </motion.div>
+
+          {/* Resize Handle */}
+          <div
+            className="h-1 bg-border hover:bg-primary cursor-row-resize transition-colors relative group"
+            onMouseDown={handleMouseDown}
+          >
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-12 h-1 bg-muted-foreground/30 rounded-full group-hover:bg-primary/50 transition-colors" />
+            </div>
+          </div>
 
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
-            className="h-full overflow-hidden"
+            className="overflow-hidden"
+            style={{ height: `${aiPanelHeight}%` }}
           >
             <AIAssistant code={code} language={language} onCodeChange={handleCodeChange} />
           </motion.div>
