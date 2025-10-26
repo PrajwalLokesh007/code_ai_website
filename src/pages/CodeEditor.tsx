@@ -7,8 +7,8 @@ import { api } from "@/convex/_generated/api";
 import { useAuth } from "@/hooks/use-auth";
 import { useAction } from "convex/react";
 import { motion } from "framer-motion";
-import { Play } from "lucide-react";
-import { useState } from "react";
+import { Loader2, Play } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
@@ -21,7 +21,7 @@ const DEFAULT_CODE: Record<string, string> = {
 };
 
 export default function CodeEditorPage() {
-  const { isAuthenticated } = useAuth();
+  const { isLoading, isAuthenticated, user, signOut } = useAuth();
   const navigate = useNavigate();
   const [language, setLanguage] = useState("python");
   const [code, setCode] = useState(DEFAULT_CODE.python);
@@ -30,6 +30,30 @@ export default function CodeEditorPage() {
   const [isRunning, setIsRunning] = useState(false);
 
   const executeCode = useAction(api.codeExecutionActions.executeCode);
+
+  // Redirect to auth if not authenticated
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      navigate("/auth");
+    }
+  }, [isLoading, isAuthenticated, navigate]);
+
+  // Show loading state while checking authentication
+  if (isLoading) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          <p className="text-sm text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render editor if not authenticated
+  if (!isAuthenticated) {
+    return null;
+  }
 
   const handleLanguageChange = (newLanguage: string) => {
     setLanguage(newLanguage);
@@ -65,6 +89,12 @@ export default function CodeEditorPage() {
     }
   };
 
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+    toast.success("Signed out successfully");
+  };
+
   return (
     <div className="h-screen flex flex-col bg-background">
       {/* Header */}
@@ -93,10 +123,15 @@ export default function CodeEditorPage() {
               <Play className="h-4 w-4" />
               Run Code
             </Button>
-            {!isAuthenticated && (
-              <Button variant="outline" onClick={() => navigate("/auth")}>
-                Sign In
-              </Button>
+            {user && (
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-muted-foreground">
+                  {user.email || "Guest"}
+                </span>
+                <Button variant="outline" onClick={handleSignOut}>
+                  Sign Out
+                </Button>
+              </div>
             )}
           </div>
         </div>
