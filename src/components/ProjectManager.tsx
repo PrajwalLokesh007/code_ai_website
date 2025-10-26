@@ -294,40 +294,66 @@ export function ProjectManager({
 
       {/* New Folder Dialog */}
       <Dialog open={showNewFolderDialog} onOpenChange={setShowNewFolderDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Create New Folder</DialogTitle>
-            <DialogDescription>
-              Organize your code snippets into folders
-            </DialogDescription>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader className="space-y-3">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
+                <FolderPlus className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <DialogTitle className="text-xl">Create New Folder</DialogTitle>
+                <DialogDescription className="text-sm mt-1">
+                  Organize your code snippets into folders
+                </DialogDescription>
+              </div>
+            </div>
           </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="folder-name">Folder Name</Label>
+          <div className="space-y-5 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="folder-name" className="text-sm font-medium">
+                Folder Name <span className="text-red-500">*</span>
+              </Label>
               <Input
                 id="folder-name"
                 value={newFolderName}
                 onChange={(e) => setNewFolderName(e.target.value)}
                 placeholder="e.g., Python Projects"
+                className="h-10"
+                autoFocus
               />
             </div>
-            <div>
-              <Label htmlFor="folder-desc">Description (Optional)</Label>
+            <div className="space-y-2">
+              <Label htmlFor="folder-desc" className="text-sm font-medium">
+                Description <span className="text-muted-foreground text-xs">(Optional)</span>
+              </Label>
               <Textarea
                 id="folder-desc"
                 value={newFolderDesc}
                 onChange={(e) => setNewFolderDesc(e.target.value)}
                 placeholder="What's this folder for?"
                 rows={3}
+                className="resize-none"
               />
             </div>
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowNewFolderDialog(false)}>
+          <DialogFooter className="gap-2 sm:gap-0">
+            <Button 
+              variant="outline" 
+              onClick={() => {
+                setShowNewFolderDialog(false);
+                setNewFolderName("");
+                setNewFolderDesc("");
+              }}
+              className="w-full sm:w-auto"
+            >
               Cancel
             </Button>
-            <Button onClick={handleCreateFolder}>
-              <Plus className="h-4 w-4 mr-2" />
+            <Button 
+              onClick={handleCreateFolder}
+              disabled={!newFolderName.trim()}
+              className="w-full sm:w-auto gap-2"
+            >
+              <Plus className="h-4 w-4" />
               Create Folder
             </Button>
           </DialogFooter>
@@ -336,36 +362,63 @@ export function ProjectManager({
 
       {/* Save Snippet Dialog */}
       <Dialog open={showSaveDialog} onOpenChange={setShowSaveDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Save Code Snippet</DialogTitle>
-            <DialogDescription>
-              Save your current code to{" "}
-              {selectedFolder
-                ? folders?.find((f) => f._id === selectedFolder)?.name
-                : "All Snippets"}
-            </DialogDescription>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader className="space-y-3">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
+                <Save className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <DialogTitle className="text-xl">Save Code Snippet</DialogTitle>
+                <DialogDescription className="text-sm mt-1">
+                  Save your current code to{" "}
+                  <span className="font-medium text-foreground">
+                    {selectedFolder
+                      ? folders?.find((f) => f._id === selectedFolder)?.name
+                      : "All Snippets"}
+                  </span>
+                </DialogDescription>
+              </div>
+            </div>
           </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="snippet-title">Snippet Title</Label>
+          <div className="space-y-5 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="snippet-title" className="text-sm font-medium">
+                Snippet Title <span className="text-red-500">*</span>
+              </Label>
               <Input
                 id="snippet-title"
                 value={snippetTitle}
                 onChange={(e) => setSnippetTitle(e.target.value)}
                 placeholder="e.g., Hello World Program"
+                className="h-10"
+                autoFocus
               />
             </div>
-            <div className="text-sm text-muted-foreground">
-              Language: <span className="font-medium">{currentLanguage.toUpperCase()}</span>
+            <div className="p-3 rounded-lg bg-muted/50 border border-border">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">Language:</span>
+                <span className="text-sm font-medium">{currentLanguage.toUpperCase()}</span>
+              </div>
             </div>
           </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowSaveDialog(false)}>
+          <DialogFooter className="gap-2 sm:gap-0">
+            <Button 
+              variant="outline" 
+              onClick={() => {
+                setShowSaveDialog(false);
+                setSnippetTitle("");
+              }}
+              className="w-full sm:w-auto"
+            >
               Cancel
             </Button>
-            <Button onClick={handleSaveSnippet}>
-              <Save className="h-4 w-4 mr-2" />
+            <Button 
+              onClick={handleSaveSnippet}
+              disabled={!snippetTitle.trim()}
+              className="w-full sm:w-auto gap-2"
+            >
+              <Save className="h-4 w-4" />
               Save Snippet
             </Button>
           </DialogFooter>
