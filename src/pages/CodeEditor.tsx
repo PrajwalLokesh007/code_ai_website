@@ -28,8 +28,10 @@ export default function CodeEditorPage() {
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
   const [isRunning, setIsRunning] = useState(false);
+  const [isDetecting, setIsDetecting] = useState(false);
 
   const executeCode = useAction(api.codeExecutionActions.executeCode);
+  const detectLanguage = useAction(api.languageDetection.detectLanguage);
 
   // Redirect to auth if not authenticated
   useEffect(() => {
@@ -63,14 +65,29 @@ export default function CodeEditorPage() {
   };
 
   const handleRun = async () => {
+    if (!code.trim()) {
+      toast.error("Please write some code first");
+      return;
+    }
+
     setIsRunning(true);
+    setIsDetecting(true);
     setOutput("");
     setError("");
 
     try {
+      // Step 1: Detect language using AI
+      toast.info("Detecting language...");
+      const detectedLang = await detectLanguage({ code });
+      setLanguage(detectedLang);
+      setIsDetecting(false);
+      
+      toast.success(`Detected: ${detectedLang.toUpperCase()}`);
+
+      // Step 2: Execute code with detected language
       const result = await executeCode({
         code,
-        language,
+        language: detectedLang,
       });
 
       if (result.error) {
@@ -84,6 +101,7 @@ export default function CodeEditorPage() {
       const errorMessage = err instanceof Error ? err.message : "Failed to execute code";
       setError(errorMessage);
       toast.error(errorMessage);
+      setIsDetecting(false);
     } finally {
       setIsRunning(false);
     }
@@ -111,17 +129,34 @@ export default function CodeEditorPage() {
               className="h-8 cursor-pointer"
               onClick={() => navigate("/")}
             />
-            <LanguageSelector value={language} onChange={handleLanguageChange} />
+            <div className="flex items-center gap-3">
+              <LanguageSelector value={language} onChange={handleLanguageChange} />
+              {isDetecting && (
+                <span className="text-xs text-muted-foreground flex items-center gap-2">
+                  <Loader2 className="h-3 w-3 animate-spin" />
+                  Detecting...
+                </span>
+              )}
+            </div>
           </div>
 
           <div className="flex items-center gap-4">
             <Button
               onClick={handleRun}
-              disabled={isRunning}
+              disabled={isRunning || !code.trim()}
               className="gap-2"
             >
-              <Play className="h-4 w-4" />
-              Run Code
+              {isRunning ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Running...
+                </>
+              ) : (
+                <>
+                  <Play className="h-4 w-4" />
+                  Run Code
+                </>
+              )}
             </Button>
             {user && (
               <div className="flex items-center gap-3">

@@ -20,6 +20,7 @@ import type * as codeExecutionActions from "../codeExecutionActions.js";
 import type * as codeExecutions from "../codeExecutions.js";
 import type * as codeSnippets from "../codeSnippets.js";
 import type * as http from "../http.js";
+import type * as languageDetection from "../languageDetection.js";
 import type * as users from "../users.js";
 
 /**
@@ -38,6 +39,7 @@ declare const fullApi: ApiFromModules<{
   codeExecutions: typeof codeExecutions;
   codeSnippets: typeof codeSnippets;
   http: typeof http;
+  languageDetection: typeof languageDetection;
   users: typeof users;
 }>;
 export declare const api: FilterApi<
