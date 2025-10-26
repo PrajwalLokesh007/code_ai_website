@@ -68,7 +68,7 @@ export function AIAssistant({ code, language }: AIAssistantProps) {
 
   return (
     <div className="h-full flex flex-col bg-background border border-border">
-      <div className="px-6 py-4 border-b border-border flex items-center justify-between">
+      <div className="px-6 py-4 border-b border-border flex items-center justify-between flex-shrink-0">
         <h3 className="font-semibold text-sm flex items-center gap-2">
           <Sparkles className="h-4 w-4" />
           AI Assistant
@@ -83,37 +83,39 @@ export function AIAssistant({ code, language }: AIAssistantProps) {
         </Button>
       </div>
 
-      <ScrollArea className="flex-1 p-6">
-        {messages.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
-            Ask questions about your code or request explanations
-          </p>
-        ) : (
-          <div className="space-y-4">
-            {messages.map((msg, idx) => (
-              <div
-                key={idx}
-                className={`text-sm ${
-                  msg.role === "user" ? "text-foreground" : "text-muted-foreground"
-                }`}
-              >
-                <div className="font-semibold mb-1">
-                  {msg.role === "user" ? "You" : "AI"}
+      <ScrollArea className="flex-1 min-h-0">
+        <div className="p-6">
+          {messages.length === 0 ? (
+            <p className="text-sm text-muted-foreground">
+              Ask questions about your code or request explanations
+            </p>
+          ) : (
+            <div className="space-y-4">
+              {messages.map((msg, idx) => (
+                <div
+                  key={idx}
+                  className={`text-sm ${
+                    msg.role === "user" ? "text-foreground" : "text-muted-foreground"
+                  }`}
+                >
+                  <div className="font-semibold mb-1">
+                    {msg.role === "user" ? "You" : "AI"}
+                  </div>
+                  <div className="whitespace-pre-wrap">{msg.content}</div>
                 </div>
-                <div className="whitespace-pre-wrap">{msg.content}</div>
-              </div>
-            ))}
-            {isLoading && (
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Loader2 className="h-4 w-4 animate-spin" />
-                <span className="text-sm">Thinking...</span>
-              </div>
-            )}
-          </div>
-        )}
+              ))}
+              {isLoading && (
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span className="text-sm">Thinking...</span>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </ScrollArea>
 
-      <div className="p-6 border-t border-border">
+      <div className="p-6 border-t border-border flex-shrink-0">
         <div className="flex gap-2">
           <Textarea
             value={input}
