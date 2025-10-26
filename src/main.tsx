@@ -8,6 +8,7 @@ import { StrictMode, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router";
 import "./index.css";
+import CodeEditorPage from "./pages/CodeEditor.tsx";
 import Landing from "./pages/Landing.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import "./types/global.d.ts";
@@ -49,7 +50,8 @@ createRoot(document.getElementById("root")!).render(
           <RouteSyncer />
           <Routes>
             <Route path="/" element={<Landing />} />
-            <Route path="/auth" element={<AuthPage redirectAfterAuth="/" />} /> {/* TODO: change redirect after auth to correct page */}
+            <Route path="/editor" element={<CodeEditorPage />} />
+            <Route path="/auth" element={<AuthPage redirectAfterAuth="/editor" />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

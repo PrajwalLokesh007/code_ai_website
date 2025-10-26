@@ -32,12 +32,21 @@ const schema = defineSchema(
       role: v.optional(roleValidator), // role of the user. do not remove
     }).index("email", ["email"]), // index for the email. do not remove or modify
 
-    // add other tables here
+    codeSnippets: defineTable({
+      userId: v.id("users"),
+      title: v.string(),
+      language: v.string(),
+      code: v.string(),
+    }).index("by_userId", ["userId"]),
 
-    // tableName: defineTable({
-    //   ...
-    //   // table fields
-    // }).index("by_field", ["field"])
+    codeExecutions: defineTable({
+      userId: v.optional(v.id("users")),
+      language: v.string(),
+      code: v.string(),
+      output: v.string(),
+      error: v.optional(v.string()),
+      executionTime: v.optional(v.number()),
+    }).index("by_userId", ["userId"]),
   },
   {
     schemaValidation: false,
