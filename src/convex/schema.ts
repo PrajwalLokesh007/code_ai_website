@@ -32,12 +32,21 @@ const schema = defineSchema(
       role: v.optional(roleValidator), // role of the user. do not remove
     }).index("email", ["email"]), // index for the email. do not remove or modify
 
+    folders: defineTable({
+      userId: v.id("users"),
+      name: v.string(),
+      description: v.optional(v.string()),
+    }).index("by_userId", ["userId"]),
+
     codeSnippets: defineTable({
       userId: v.id("users"),
+      folderId: v.optional(v.id("folders")),
       title: v.string(),
       language: v.string(),
       code: v.string(),
-    }).index("by_userId", ["userId"]),
+    })
+      .index("by_userId", ["userId"])
+      .index("by_folderId", ["folderId"]),
 
     codeExecutions: defineTable({
       userId: v.optional(v.id("users")),

@@ -2,6 +2,7 @@ import { AIAssistant } from "@/components/AIAssistant";
 import { CodeEditor as Editor } from "@/components/CodeEditor";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { OutputPanel } from "@/components/OutputPanel";
+import { ProjectManager } from "@/components/ProjectManager";
 import { Button } from "@/components/ui/button";
 import { api } from "@/convex/_generated/api";
 import { useAuth } from "@/hooks/use-auth";
@@ -182,6 +183,16 @@ export default function CodeEditorPage() {
           </div>
 
           <div className="flex items-center gap-4">
+            <ProjectManager
+              currentCode={code}
+              currentLanguage={language}
+              onLoadSnippet={(newCode, newLanguage) => {
+                setCode(newCode);
+                setLanguage(newLanguage);
+                setOutput("");
+                setError("");
+              }}
+            />
             <Button
               onClick={handleRun}
               disabled={isRunning || !code.trim()}

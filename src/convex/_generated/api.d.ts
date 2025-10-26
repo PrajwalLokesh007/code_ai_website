@@ -14,6 +14,7 @@ import type * as auth from "../auth.js";
 import type * as codeExecutionActions from "../codeExecutionActions.js";
 import type * as codeExecutions from "../codeExecutions.js";
 import type * as codeSnippets from "../codeSnippets.js";
+import type * as folders from "../folders.js";
 import type * as http from "../http.js";
 import type * as languageDetection from "../languageDetection.js";
 import type * as users from "../users.js";
@@ -39,6 +40,7 @@ declare const fullApi: ApiFromModules<{
   codeExecutionActions: typeof codeExecutionActions;
   codeExecutions: typeof codeExecutions;
   codeSnippets: typeof codeSnippets;
+  folders: typeof folders;
   http: typeof http;
   languageDetection: typeof languageDetection;
   users: typeof users;
