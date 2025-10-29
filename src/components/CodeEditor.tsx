@@ -2,7 +2,8 @@ import { useEffect, useRef } from "react";
 import * as monaco from "monaco-editor";
 
 // Configure Monaco Editor web workers
-self.MonacoEnvironment = {
+// @ts-ignore
+window.MonacoEnvironment = {
   getWorker(_: string, label: string) {
     if (label === 'json') {
       return new Worker(new URL('monaco-editor/esm/vs/language/json/json.worker', import.meta.url), { type: 'module' });
