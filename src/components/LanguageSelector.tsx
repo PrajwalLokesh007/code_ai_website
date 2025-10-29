@@ -19,7 +19,6 @@ const LANGUAGES = [
   { id: "go", name: "Go" },
   { id: "rust", name: "Rust" },
   { id: "swift", name: "Swift" },
-  { id: "kotlin", name: "Kotlin" },
   { id: "ruby", name: "Ruby" },
   { id: "php", name: "PHP" },
   

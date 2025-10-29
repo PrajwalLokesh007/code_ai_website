@@ -18,7 +18,6 @@ const LANGUAGE_IDS: Record<string, number> = {
   rust: 73,
   php: 68,
   swift: 83,
-  kotlin: 78,
   csharp: 51,
   r: 80,
   perl: 85,
