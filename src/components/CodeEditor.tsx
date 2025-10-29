@@ -2,24 +2,31 @@ import { useEffect, useRef } from "react";
 import * as monaco from "monaco-editor";
 
 // Configure Monaco Editor web workers
-// @ts-ignore
-window.MonacoEnvironment = {
-  getWorker(_: string, label: string) {
-    if (label === 'json') {
-      return new Worker(new URL('monaco-editor/esm/vs/language/json/json.worker', import.meta.url), { type: 'module' });
+if (typeof window !== 'undefined') {
+  // @ts-ignore
+  window.MonacoEnvironment = {
+    getWorker(_: string, label: string) {
+      try {
+        if (label === 'json') {
+          return new Worker(new URL('monaco-editor/esm/vs/language/json/json.worker', import.meta.url), { type: 'module' });
+        }
+        if (label === 'css' || label === 'scss' || label === 'less') {
+          return new Worker(new URL('monaco-editor/esm/vs/language/css/css.worker', import.meta.url), { type: 'module' });
+        }
+        if (label === 'html' || label === 'handlebars' || label === 'razor') {
+          return new Worker(new URL('monaco-editor/esm/vs/language/html/html.worker', import.meta.url), { type: 'module' });
+        }
+        if (label === 'typescript' || label === 'javascript') {
+          return new Worker(new URL('monaco-editor/esm/vs/language/typescript/ts.worker', import.meta.url), { type: 'module' });
+        }
+        return new Worker(new URL('monaco-editor/esm/vs/editor/editor.worker', import.meta.url), { type: 'module' });
+      } catch (error) {
+        console.error('Failed to create Monaco worker:', error);
+        throw error;
+      }
     }
-    if (label === 'css' || label === 'scss' || label === 'less') {
-      return new Worker(new URL('monaco-editor/esm/vs/language/css/css.worker', import.meta.url), { type: 'module' });
-    }
-    if (label === 'html' || label === 'handlebars' || label === 'razor') {
-      return new Worker(new URL('monaco-editor/esm/vs/language/html/html.worker', import.meta.url), { type: 'module' });
-    }
-    if (label === 'typescript' || label === 'javascript') {
-      return new Worker(new URL('monaco-editor/esm/vs/language/typescript/ts.worker', import.meta.url), { type: 'module' });
-    }
-    return new Worker(new URL('monaco-editor/esm/vs/editor/editor.worker', import.meta.url), { type: 'module' });
-  }
-};
+  };
+}
 
 interface CodeEditorProps {
   value: string;
@@ -34,41 +41,53 @@ export function CodeEditor({ value, onChange, language }: CodeEditorProps) {
   useEffect(() => {
     if (!editorRef.current) return;
 
-    const editor = monaco.editor.create(editorRef.current, {
-      value,
-      language: language === "cpp" ? "cpp" : language,
-      theme: "vs-dark",
-      minimap: { enabled: false },
-      fontSize: 14,
-      lineNumbers: "on",
-      scrollBeyondLastLine: false,
-      automaticLayout: true,
-      tabSize: 2,
-    });
+    try {
+      const editor = monaco.editor.create(editorRef.current, {
+        value,
+        language: language === "cpp" ? "cpp" : language,
+        theme: "vs-dark",
+        minimap: { enabled: false },
+        fontSize: 14,
+        lineNumbers: "on",
+        scrollBeyondLastLine: false,
+        automaticLayout: true,
+        tabSize: 2,
+      });
 
-    monacoEditorRef.current = editor;
+      monacoEditorRef.current = editor;
 
-    editor.onDidChangeModelContent(() => {
-      onChange(editor.getValue());
-    });
+      editor.onDidChangeModelContent(() => {
+        onChange(editor.getValue());
+      });
 
-    return () => {
-      editor.dispose();
-    };
+      return () => {
+        editor.dispose();
+      };
+    } catch (error) {
+      console.error('Failed to initialize Monaco Editor:', error);
+    }
   }, []);
 
   useEffect(() => {
     if (monacoEditorRef.current) {
       const model = monacoEditorRef.current.getModel();
       if (model) {
-        monaco.editor.setModelLanguage(model, language === "cpp" ? "cpp" : language);
+        try {
+          monaco.editor.setModelLanguage(model, language === "cpp" ? "cpp" : language);
+        } catch (error) {
+          console.error('Failed to set language:', error);
+        }
       }
     }
   }, [language]);
 
   useEffect(() => {
     if (monacoEditorRef.current && monacoEditorRef.current.getValue() !== value) {
-      monacoEditorRef.current.setValue(value);
+      try {
+        monacoEditorRef.current.setValue(value);
+      } catch (error) {
+        console.error('Failed to set editor value:', error);
+      }
     }
   }, [value]);
 
