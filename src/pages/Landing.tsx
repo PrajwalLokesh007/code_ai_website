@@ -117,7 +117,7 @@ export default function Landing() {
                       <div className="text-foreground pl-4">
                         <span className="text-purple-500">print</span>
                         <span className="text-yellow-500">(</span>
-                        <span className="text-green-500">"Hello, VLY.AI!"</span>
+                        <span className="text-green-500">"Hello, World!"</span>
                         <span className="text-yellow-500">)</span>
                       </div>
                     </div>
