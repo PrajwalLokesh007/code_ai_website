@@ -61,6 +61,11 @@ function ErrorDialog({
   error: GenericError;
   setError: (error: GenericError | null) => void;
 }) {
+  // Don't render the dialog if VLY_APP_ID is not set
+  if (!import.meta.env.VITE_VLY_APP_ID) {
+    return null;
+  }
+  
   return (
     <Dialog
       defaultOpen={true}
@@ -229,10 +234,11 @@ export function InstrumentationProvider({
       window.removeEventListener("unhandledrejection", handleRejection);
     };
   }, []);
+  
   return (
     <>
       <ErrorBoundary>{children}</ErrorBoundary>
-      {error && <ErrorDialog error={error} setError={setError} />}
+      {error && import.meta.env.VITE_VLY_APP_ID && <ErrorDialog error={error} setError={setError} />}
     </>
   );
 }
