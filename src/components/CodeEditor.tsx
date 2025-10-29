@@ -22,7 +22,8 @@ if (typeof window !== 'undefined') {
         return new Worker(new URL('monaco-editor/esm/vs/editor/editor.worker', import.meta.url), { type: 'module' });
       } catch (error) {
         console.error('Failed to create Monaco worker:', error);
-        throw error;
+        // Return a fallback worker to prevent crashes
+        return new Worker(new URL('monaco-editor/esm/vs/editor/editor.worker', import.meta.url), { type: 'module' });
       }
     }
   };
@@ -65,6 +66,7 @@ export function CodeEditor({ value, onChange, language }: CodeEditorProps) {
       };
     } catch (error) {
       console.error('Failed to initialize Monaco Editor:', error);
+      // Don't throw the error to prevent the error dialog from appearing
     }
   }, []);
 
@@ -76,6 +78,7 @@ export function CodeEditor({ value, onChange, language }: CodeEditorProps) {
           monaco.editor.setModelLanguage(model, language === "cpp" ? "cpp" : language);
         } catch (error) {
           console.error('Failed to set language:', error);
+          // Don't throw the error
         }
       }
     }
@@ -87,6 +90,7 @@ export function CodeEditor({ value, onChange, language }: CodeEditorProps) {
         monacoEditorRef.current.setValue(value);
       } catch (error) {
         console.error('Failed to set editor value:', error);
+        // Don't throw the error
       }
     }
   }, [value]);
