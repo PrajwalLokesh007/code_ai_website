@@ -113,10 +113,10 @@ export function AIAssistant({ code, language, onCodeChange }: AIAssistantProps) 
   };
 
   return (
-    <div className="h-full flex flex-col bg-background border border-border">
+    <div className="h-full flex flex-col bg-background">
       <div className="px-6 py-4 border-b border-border flex items-center justify-between flex-shrink-0">
         <h3 className="font-semibold text-sm flex items-center gap-2">
-          <Sparkles className="h-4 w-4" />
+          <Sparkles className="h-4 w-4 text-primary" />
           AI Assistant
         </h3>
         <Button
@@ -124,7 +124,9 @@ export function AIAssistant({ code, language, onCodeChange }: AIAssistantProps) 
           size="sm"
           onClick={handleExplain}
           disabled={!code.trim() || isLoading}
+          className="gap-2"
         >
+          <Sparkles className="h-3 w-3" />
           Explain Code
         </Button>
       </div>
@@ -132,14 +134,54 @@ export function AIAssistant({ code, language, onCodeChange }: AIAssistantProps) 
       <ScrollArea className="flex-1 min-h-0">
         <div className="p-6">
           {messages.length === 0 ? (
-            <div className="space-y-3">
+            <div className="space-y-4">
               <p className="text-sm text-muted-foreground">
                 Ask questions about your code or request AI-powered edits
               </p>
-              <div className="p-3 rounded-lg bg-primary/5 border border-primary/20">
-                <p className="text-xs text-muted-foreground">
-                  💡 <strong>Try AI Code Editing:</strong> Type instructions like "add error handling" or "optimize this function" and click the magic wand button!
-                </p>
+              
+              {/* Feature Tiles */}
+              <div className="grid grid-cols-1 gap-3">
+                <div className="p-4 rounded-lg bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 hover:border-primary/40 transition-all">
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 rounded-md bg-primary/20">
+                      <Wand2 className="h-4 w-4 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-sm mb-1">AI Code Editing</h4>
+                      <p className="text-xs text-muted-foreground">
+                        Type instructions like "add error handling" or "optimize this function" and click the magic wand button
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-lg bg-gradient-to-br from-accent/10 to-accent/5 border border-border hover:border-accent/40 transition-all">
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 rounded-md bg-accent/20">
+                      <Send className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-sm mb-1">Ask Questions</h4>
+                      <p className="text-xs text-muted-foreground">
+                        Get explanations, debugging help, or learn about programming concepts
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-lg bg-gradient-to-br from-secondary/10 to-secondary/5 border border-border hover:border-secondary/40 transition-all">
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 rounded-md bg-secondary/20">
+                      <Sparkles className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-sm mb-1">Code Explanation</h4>
+                      <p className="text-xs text-muted-foreground">
+                        Click "Explain Code" to get a detailed breakdown of your current code
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           ) : (
@@ -147,19 +189,32 @@ export function AIAssistant({ code, language, onCodeChange }: AIAssistantProps) 
               {messages.map((msg, idx) => (
                 <div
                   key={idx}
-                  className={`text-sm ${
-                    msg.role === "user" ? "text-foreground" : "text-muted-foreground"
+                  className={`p-4 rounded-lg border ${
+                    msg.role === "user"
+                      ? "bg-primary/5 border-primary/20"
+                      : "bg-muted/50 border-border"
                   }`}
                 >
-                  <div className="font-semibold mb-1">
-                    {msg.role === "user" ? "You" : "AI"}
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className={`p-1.5 rounded-md ${
+                      msg.role === "user" ? "bg-primary/20" : "bg-accent/20"
+                    }`}>
+                      {msg.role === "user" ? (
+                        <span className="text-xs font-semibold">You</span>
+                      ) : (
+                        <Sparkles className="h-3 w-3" />
+                      )}
+                    </div>
+                    <span className="font-semibold text-xs">
+                      {msg.role === "user" ? "You" : "AI Assistant"}
+                    </span>
                   </div>
-                  <div className="whitespace-pre-wrap">{msg.content}</div>
+                  <div className="text-sm whitespace-pre-wrap break-words">{msg.content}</div>
                   {msg.isCodeEdit && msg.editedCode && (
                     <Button
                       size="sm"
                       onClick={() => applyCodeToEditor(msg.editedCode!)}
-                      className="mt-2 gap-2"
+                      className="mt-3 gap-2"
                     >
                       <Wand2 className="h-3 w-3" />
                       Apply to Editor
@@ -168,9 +223,9 @@ export function AIAssistant({ code, language, onCodeChange }: AIAssistantProps) 
                 </div>
               ))}
               {isLoading && (
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  <span className="text-sm">Thinking...</span>
+                <div className="flex items-center gap-3 p-4 rounded-lg bg-muted/50 border border-border">
+                  <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                  <span className="text-sm text-muted-foreground">AI is thinking...</span>
                 </div>
               )}
             </div>

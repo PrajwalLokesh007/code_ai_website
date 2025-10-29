@@ -9,11 +9,11 @@ interface OutputPanelProps {
 
 export function OutputPanel({ output, error, isRunning }: OutputPanelProps) {
   return (
-    <div className="h-full flex flex-col bg-background border border-border">
-      <div className="px-6 py-4 border-b border-border">
+    <div className="h-full flex flex-col bg-background">
+      <div className="px-6 py-3 border-b border-border flex-shrink-0">
         <h3 className="font-semibold text-sm">Output</h3>
       </div>
-      <ScrollArea className="flex-1">
+      <ScrollArea className="flex-1 min-h-0">
         <div className="p-6">
           {isRunning ? (
             <div className="flex items-center gap-3 text-muted-foreground">
@@ -21,9 +21,9 @@ export function OutputPanel({ output, error, isRunning }: OutputPanelProps) {
               <span className="text-sm">Running code...</span>
             </div>
           ) : error ? (
-            <pre className="text-sm text-red-500 font-mono whitespace-pre-wrap">{error}</pre>
+            <pre className="text-sm text-red-500 font-mono whitespace-pre-wrap break-words">{error}</pre>
           ) : output ? (
-            <pre className="text-sm font-mono whitespace-pre-wrap">{output}</pre>
+            <pre className="text-sm font-mono whitespace-pre-wrap break-words">{output}</pre>
           ) : (
             <p className="text-sm text-muted-foreground">Run your code to see output</p>
           )}

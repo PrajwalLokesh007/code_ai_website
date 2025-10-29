@@ -254,48 +254,37 @@ export default function CodeEditorPage() {
 
       {/* Main Content */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden">
-        {/* Left: Editor */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.1 }}
-          className="border-r border-border h-full overflow-hidden"
-        >
-          <Editor value={code} onChange={handleCodeChange} language={language} />
-        </motion.div>
-
-        {/* Right: Output and AI with dynamic resizing */}
-        <div className="flex flex-col h-full overflow-hidden">
+        {/* Left: Editor and Output */}
+        <div className="flex flex-col h-full overflow-hidden border-r border-border">
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.1 }}
+            className="flex-1 overflow-hidden"
+          >
+            <Editor value={code} onChange={handleCodeChange} language={language} />
+          </motion.div>
+
+          {/* Output Panel at Bottom */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="border-b border-border overflow-hidden"
-            style={{ height: `${100 - aiPanelHeight}%` }}
+            className="h-48 border-t border-border overflow-hidden"
           >
             <OutputPanel output={output} error={error} isRunning={isRunning} />
           </motion.div>
-
-          {/* Resize Handle */}
-          <div
-            className="h-1 bg-border hover:bg-primary cursor-row-resize transition-colors relative group"
-            onMouseDown={handleMouseDown}
-          >
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-12 h-1 bg-muted-foreground/30 rounded-full group-hover:bg-primary/50 transition-colors" />
-            </div>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3 }}
-            className="overflow-hidden"
-            style={{ height: `${aiPanelHeight}%` }}
-          >
-            <AIAssistant code={code} language={language} onCodeChange={handleCodeChange} />
-          </motion.div>
         </div>
+
+        {/* Right: AI Assistant */}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.3 }}
+          className="h-full overflow-hidden"
+        >
+          <AIAssistant code={code} language={language} onCodeChange={handleCodeChange} />
+        </motion.div>
       </div>
     </div>
   );
