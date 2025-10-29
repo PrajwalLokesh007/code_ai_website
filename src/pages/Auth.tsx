@@ -134,6 +134,28 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                   {error && (
                     <p className="mt-2 text-sm text-red-500">{error}</p>
                   )}
+                  <div className="mt-4">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      className="w-full"
+                      onClick={async () => {
+                        setIsLoading(true);
+                        try {
+                          await signIn("anonymous");
+                          const redirect = redirectAfterAuth || "/";
+                          navigate(redirect);
+                        } catch (error) {
+                          console.error("Guest sign-in error:", error);
+                          setError("Failed to sign in as guest. Please try again.");
+                          setIsLoading(false);
+                        }
+                      }}
+                      disabled={isLoading}
+                    >
+                      Continue as Guest
+                    </Button>
+                  </div>
                 </CardContent>
               </form>
             </>
