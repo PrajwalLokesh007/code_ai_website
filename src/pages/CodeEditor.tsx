@@ -4,6 +4,7 @@ import { LanguageSelector } from "@/components/LanguageSelector";
 import { OutputPanel } from "@/components/OutputPanel";
 import { ProjectManager } from "@/components/ProjectManager";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { api } from "@/convex/_generated/api";
 import { useAuth } from "@/hooks/use-auth";
 import { useAction } from "convex/react";
@@ -202,6 +203,7 @@ export default function CodeEditorPage() {
           </div>
 
           <div className="flex items-center gap-4">
+            <ThemeToggle />
             <ProjectManager
               currentCode={code}
               currentLanguage={language}

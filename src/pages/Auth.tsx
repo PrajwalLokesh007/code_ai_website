@@ -13,6 +13,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 import { useAuth } from "@/hooks/use-auth";
 import { ArrowRight, Loader2, Mail } from "lucide-react";
@@ -82,6 +83,11 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
 
   return (
     <div className="min-h-screen flex flex-col">
+      {/* Theme Toggle in top right */}
+      <div className="absolute top-4 right-4 z-50">
+        <ThemeToggle />
+      </div>
+
       {/* Auth Content */}
       <div className="flex-1 flex items-center justify-center">
         <div className="flex items-center justify-center h-full flex-col">

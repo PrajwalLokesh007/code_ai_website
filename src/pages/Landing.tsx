@@ -3,6 +3,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { motion } from "framer-motion";
 import { ArrowRight, Code2, Sparkles, Zap, CheckCircle2, Globe, Shield } from "lucide-react";
 import { useNavigate } from "react-router";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function Landing() {
   const { isAuthenticated } = useAuth();
@@ -47,16 +48,19 @@ export default function Landing() {
             <img src="/code-logo.svg" alt="Code.AI" className="h-8 sm:h-10" />
             <span className="text-xl sm:text-2xl font-bold tracking-tight">Code.AI</span>
           </motion.div>
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button
-              variant="outline"
-              onClick={() => navigate(isAuthenticated ? "/editor" : "/auth")}
-              className="gap-2"
-            >
-              {isAuthenticated ? "Go to Editor" : "Sign In"}
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </motion.div>
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button
+                variant="outline"
+                onClick={() => navigate(isAuthenticated ? "/editor" : "/auth")}
+                className="gap-2"
+              >
+                {isAuthenticated ? "Go to Editor" : "Sign In"}
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </motion.div>
+          </div>
         </div>
       </motion.header>
 

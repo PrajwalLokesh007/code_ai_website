@@ -12,6 +12,7 @@ import CodeEditorPage from "./pages/CodeEditor.tsx";
 import Landing from "./pages/Landing.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import "./types/global.d.ts";
+import { ThemeProvider } from "./hooks/use-theme.tsx";
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
 
@@ -46,16 +47,18 @@ createRoot(document.getElementById("root")!).render(
     <VlyToolbar />
     <InstrumentationProvider>
       <ConvexAuthProvider client={convex}>
-        <BrowserRouter>
-          <RouteSyncer />
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/editor" element={<CodeEditorPage />} />
-            <Route path="/auth" element={<AuthPage redirectAfterAuth="/editor" />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-        <Toaster />
+        <ThemeProvider>
+          <BrowserRouter>
+            <RouteSyncer />
+            <Routes>
+              <Route path="/" element={<Landing />} />
+              <Route path="/editor" element={<CodeEditorPage />} />
+              <Route path="/auth" element={<AuthPage redirectAfterAuth="/editor" />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+          <Toaster />
+        </ThemeProvider>
       </ConvexAuthProvider>
     </InstrumentationProvider>
   </StrictMode>,

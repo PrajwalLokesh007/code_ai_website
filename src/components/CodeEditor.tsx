@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import * as monaco from "monaco-editor";
+import { useTheme } from "@/hooks/use-theme";
 
 // Configure Monaco Editor web workers
 if (typeof window !== 'undefined') {
@@ -38,6 +39,7 @@ interface CodeEditorProps {
 export function CodeEditor({ value, onChange, language }: CodeEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
   const monacoEditorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
+  const { theme } = useTheme();
 
   useEffect(() => {
     if (!editorRef.current) return;
@@ -46,7 +48,7 @@ export function CodeEditor({ value, onChange, language }: CodeEditorProps) {
       const editor = monaco.editor.create(editorRef.current, {
         value,
         language: language === "cpp" ? "cpp" : language,
-        theme: "vs-dark",
+        theme: theme === "dark" ? "vs-dark" : "vs",
         minimap: { enabled: false },
         fontSize: 14,
         lineNumbers: "on",
@@ -66,9 +68,18 @@ export function CodeEditor({ value, onChange, language }: CodeEditorProps) {
       };
     } catch (error) {
       console.error('Failed to initialize Monaco Editor:', error);
-      // Don't throw the error to prevent the error dialog from appearing
     }
   }, []);
+
+  useEffect(() => {
+    if (monacoEditorRef.current) {
+      try {
+        monaco.editor.setTheme(theme === "dark" ? "vs-dark" : "vs");
+      } catch (error) {
+        console.error('Failed to set theme:', error);
+      }
+    }
+  }, [theme]);
 
   useEffect(() => {
     if (monacoEditorRef.current) {
