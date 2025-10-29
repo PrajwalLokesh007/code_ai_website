@@ -166,8 +166,8 @@ export default function CodeEditorPage() {
         <div className="px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-8">
             <img
-              src="/logo.svg"
-              alt="VLY.AI"
+              src="/code-logo.svg"
+              alt="Code.AI"
               className="h-8 cursor-pointer"
               onClick={() => navigate("/")}
             />
