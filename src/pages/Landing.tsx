@@ -44,8 +44,8 @@ export default function Landing() {
             whileTap={{ scale: 0.95 }}
             onClick={() => navigate("/")}
           >
-            <img src="/logo.svg" alt="VLY.AI" className="h-8 sm:h-10" />
-            <span className="text-xl sm:text-2xl font-bold tracking-tight">VLY.AI</span>
+            <img src="/logo.svg" alt="Code.AI" className="h-8 sm:h-10" />
+            <span className="text-xl sm:text-2xl font-bold tracking-tight">Code.AI</span>
           </motion.div>
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
