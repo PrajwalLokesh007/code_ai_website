@@ -263,7 +263,7 @@ export default function Landing() {
         className="border-t border-border/50 py-6 sm:py-8 backdrop-blur-sm bg-background/80"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-muted-foreground">
-          © 2024 VLY.AI • Empowering developers worldwide
+          © 2024 Code.AI • Empowering developers worldwide
         </div>
       </motion.footer>
     </div>
