@@ -2,30 +2,17 @@ import { useEffect, useRef } from "react";
 import * as monaco from "monaco-editor";
 import { useTheme } from "@/hooks/use-theme";
 
-// Configure Monaco Editor web workers
+// Configure Monaco Editor without web workers for simpler build
 if (typeof window !== 'undefined') {
   // @ts-ignore
-  window.MonacoEnvironment = {
-    getWorker(_: string, label: string) {
-      try {
-        if (label === 'json') {
-          return new Worker(new URL('monaco-editor/esm/vs/language/json/json.worker', import.meta.url), { type: 'module' });
-        }
-        if (label === 'css' || label === 'scss' || label === 'less') {
-          return new Worker(new URL('monaco-editor/esm/vs/language/css/css.worker', import.meta.url), { type: 'module' });
-        }
-        if (label === 'html' || label === 'handlebars' || label === 'razor') {
-          return new Worker(new URL('monaco-editor/esm/vs/language/html/html.worker', import.meta.url), { type: 'module' });
-        }
-        if (label === 'typescript' || label === 'javascript') {
-          return new Worker(new URL('monaco-editor/esm/vs/language/typescript/ts.worker', import.meta.url), { type: 'module' });
-        }
-        return new Worker(new URL('monaco-editor/esm/vs/editor/editor.worker', import.meta.url), { type: 'module' });
-      } catch (error) {
-        console.error('Failed to create Monaco worker:', error);
-        // Return a fallback worker to prevent crashes
-        return new Worker(new URL('monaco-editor/esm/vs/editor/editor.worker', import.meta.url), { type: 'module' });
-      }
+  self.MonacoEnvironment = {
+    getWorkerUrl: function () {
+      return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
+        self.MonacoEnvironment = {
+          baseUrl: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.43.0/min/'
+        };
+        importScripts('https://cdn.jsdelivr.net/npm/monaco-editor@0.43.0/min/vs/base/worker/workerMain.js');
+      `)}`;
     }
   };
 }
