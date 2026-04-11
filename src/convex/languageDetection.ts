@@ -13,7 +13,11 @@ export const detectLanguage = action({
 
     const openai = new OpenAI({
       apiKey,
-      baseURL: "https://openrouter.ai/api/v1"
+      baseURL: "https://openrouter.ai/api/v1",
+      defaultHeaders: {
+        "HTTP-Referer": "https://code-ai.app",
+        "X-Title": "Code.AI"
+      }
     });
 
     const response = await openai.chat.completions.create({

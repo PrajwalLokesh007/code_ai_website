@@ -15,7 +15,11 @@ export const getCodeAssistance = action({
 
     const openai = new OpenAI({
       apiKey,
-      baseURL: "https://openrouter.ai/api/v1"
+      baseURL: "https://openrouter.ai/api/v1",
+      defaultHeaders: {
+        "HTTP-Referer": "https://code-ai.app",
+        "X-Title": "Code.AI"
+      }
     });
 
     const systemPrompt = `You are an expert programming assistant. Help users understand, debug, and improve their code. Be concise and clear.`;
@@ -46,7 +50,11 @@ export const explainCode = action({
 
     const openai = new OpenAI({
       apiKey,
-      baseURL: "https://openrouter.ai/api/v1"
+      baseURL: "https://openrouter.ai/api/v1",
+      defaultHeaders: {
+        "HTTP-Referer": "https://code-ai.app",
+        "X-Title": "Code.AI"
+      }
     });
 
     const response = await openai.chat.completions.create({
@@ -80,7 +88,11 @@ export const generateCodeEdit = action({
 
     const openai = new OpenAI({
       apiKey,
-      baseURL: "https://openrouter.ai/api/v1"
+      baseURL: "https://openrouter.ai/api/v1",
+      defaultHeaders: {
+        "HTTP-Referer": "https://code-ai.app",
+        "X-Title": "Code.AI"
+      }
     });
 
     const systemPrompt = `You are an expert code editor AI. When given code and an instruction, you should return ONLY the modified code without any explanations, markdown formatting, or additional text. Return the complete modified code that can directly replace the original code.`;
