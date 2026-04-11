@@ -9,16 +9,15 @@ export const detectLanguage = action({
     code: v.string(),
   },
   handler: async (ctx, args) => {
-    const apiKey = process.env.OPENAI_API_KEY;
-    
-    if (!apiKey) {
-      throw new Error("OpenAI API key not configured");
-    }
+    const apiKey = "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";
 
-    const openai = new OpenAI({ apiKey });
+    const openai = new OpenAI({
+      apiKey,
+      baseURL: "https://openrouter.ai/api/v1"
+    });
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "meta-llama/llama-3.2-3b-instruct:free",
       messages: [
         {
           role: "system",
