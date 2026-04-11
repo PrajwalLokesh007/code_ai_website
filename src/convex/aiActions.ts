@@ -11,7 +11,7 @@ export const getCodeAssistance = action({
     question: v.string(),
   },
   handler: async (ctx, args) => {
-    const apiKey = "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";
+    const apiKey = "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";
 
     const openai = new OpenAI({
       apiKey,
@@ -46,7 +46,7 @@ export const explainCode = action({
     language: v.string(),
   },
   handler: async (ctx, args) => {
-    const apiKey = "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";
+    const apiKey = "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";
 
     const openai = new OpenAI({
       apiKey,
@@ -84,7 +84,7 @@ export const generateCodeEdit = action({
     instruction: v.string(),
   },
   handler: async (ctx, args) => {
-    const apiKey = "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";
+    const apiKey = "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";
 
     const openai = new OpenAI({
       apiKey,
