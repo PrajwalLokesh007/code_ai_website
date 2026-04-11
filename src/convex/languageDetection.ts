@@ -21,19 +21,15 @@ export const detectLanguage = action({
     });
 
     const response = await openai.chat.completions.create({
-      model: "meta-llama/llama-3.2-3b-instruct:free",
+      model: "google/gemini-2.0-flash-exp:free",
       messages: [
         {
-          role: "system",
-          content: `You are a programming language detection expert. Analyze the provided code and identify which programming language it is written in. You must respond with ONLY ONE of these exact values: python, javascript, typescript, java, cpp, c, csharp, go, rust, ruby, php, swift, kotlin, r, perl, scala, haskell, lua, bash, sql, assembly, clojure, cobol, commonlisp, d, elixir, erlang, fsharp, fortran, groovy, objectivec, ocaml, octave, pascal, prolog, racket, scheme, visualbasic. Do not include any explanation or additional text.`,
-        },
-        {
           role: "user",
-          content: `Detect the programming language of this code:\n\n${args.code}`,
+          content: `Detect programming language. Respond with ONE word only from: python, javascript, typescript, java, cpp, c, csharp, go, rust, ruby, php, swift, kotlin, r, perl, scala, haskell, lua, bash, sql\n\nCode:\n${args.code.substring(0, 500)}`,
         },
       ],
-      temperature: 0.1,
-      max_tokens: 10,
+      temperature: 0,
+      max_tokens: 5,
     });
 
     const detectedLanguage = response.choices[0]?.message?.content?.trim().toLowerCase() || "python";

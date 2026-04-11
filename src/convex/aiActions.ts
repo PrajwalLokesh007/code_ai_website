@@ -27,13 +27,12 @@ export const getCodeAssistance = action({
     const userPrompt = `Language: ${args.language}\n\nCode:\n${args.code}\n\nQuestion: ${args.question}`;
 
     const response = await openai.chat.completions.create({
-      model: "meta-llama/llama-3.2-3b-instruct:free",
+      model: "google/gemini-2.0-flash-exp:free",
       messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt },
+        { role: "user", content: `${systemPrompt}\n\n${userPrompt}` },
       ],
       temperature: 0.7,
-      max_tokens: 500,
+      max_tokens: 300,
     });
 
     return response.choices[0]?.message?.content || "No response generated";
@@ -58,19 +57,15 @@ export const explainCode = action({
     });
 
     const response = await openai.chat.completions.create({
-      model: "meta-llama/llama-3.2-3b-instruct:free",
+      model: "google/gemini-2.0-flash-exp:free",
       messages: [
         {
-          role: "system",
-          content: "You are a code explanation expert. Explain code clearly and concisely.",
-        },
-        {
           role: "user",
-          content: `Explain this ${args.language} code:\n\n${args.code}`,
+          content: `You are a code explanation expert. Explain this ${args.language} code clearly and concisely:\n\n${args.code}`,
         },
       ],
       temperature: 0.7,
-      max_tokens: 400,
+      max_tokens: 250,
     });
 
     return response.choices[0]?.message?.content || "No explanation generated";
@@ -100,13 +95,12 @@ export const generateCodeEdit = action({
     const userPrompt = `Language: ${args.language}\n\nCurrent Code:\n${args.code}\n\nInstruction: ${args.instruction}\n\nReturn ONLY the modified code, nothing else.`;
 
     const response = await openai.chat.completions.create({
-      model: "meta-llama/llama-3.2-3b-instruct:free",
+      model: "google/gemini-2.0-flash-exp:free",
       messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt },
+        { role: "user", content: `${systemPrompt}\n\n${userPrompt}` },
       ],
       temperature: 0.3,
-      max_tokens: 1000,
+      max_tokens: 600,
     });
 
     let modifiedCode = response.choices[0]?.message?.content || args.code;
