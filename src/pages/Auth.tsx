@@ -243,6 +243,26 @@ function Auth({ redirectAfterAuth }: AuthProps = {}) {
                   >
                     Use different email
                   </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={async () => {
+                      setIsLoading(true);
+                      try {
+                        await signIn("anonymous");
+                        const redirect = redirectAfterAuth || "/";
+                        navigate(redirect);
+                      } catch (error) {
+                        console.error("Guest sign-in error:", error);
+                        setError("Failed to sign in as guest. Please try again.");
+                        setIsLoading(false);
+                      }
+                    }}
+                    disabled={isLoading}
+                    className="w-full mt-2"
+                  >
+                    Continue as Guest
+                  </Button>
                 </CardFooter>
               </form>
             </>

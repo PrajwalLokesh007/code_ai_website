@@ -17,6 +17,19 @@ if (typeof window !== 'undefined') {
   };
 }
 
+const LANGUAGE_TEMPLATES: Record<string, string> = {
+  javascript: 'console.log("Hello, World!");',
+  typescript: 'const message: string = "Hello, World!";\nconsole.log(message);',
+  python: 'print("Hello, World!")',
+  java: 'public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, World!");\n    }\n}',
+  cpp: '#include <iostream>\n\nint main() {\n    std::cout << "Hello, World!" << std::endl;\n    return 0;\n}',
+  c: '#include <stdio.h>\n\nint main() {\n    printf("Hello, World!\\n");\n    return 0;\n}',
+  go: 'package main\n\nimport "fmt"\n\nfunc main() {\n    fmt.Println("Hello, World!")\n}',
+  rust: 'fn main() {\n    println!("Hello, World!");\n}',
+  ruby: 'puts "Hello, World!"',
+  php: '<?php\necho "Hello, World!";\n?>'
+};
+
 interface CodeEditorProps {
   value: string;
   onChange: (value: string) => void;
@@ -27,6 +40,7 @@ export function CodeEditor({ value, onChange, language }: CodeEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
   const monacoEditorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const { theme } = useTheme();
+  const isInitialMount = useRef(true);
 
   useEffect(() => {
     if (!editorRef.current) return;
@@ -74,12 +88,20 @@ export function CodeEditor({ value, onChange, language }: CodeEditorProps) {
       if (model) {
         try {
           monaco.editor.setModelLanguage(model, language === "cpp" ? "cpp" : language);
+          
+          // Auto-fill template when changing languages (but not on initial load)
+          if (!isInitialMount.current) {
+            const newTemplate = LANGUAGE_TEMPLATES[language] || "";
+            monacoEditorRef.current.setValue(newTemplate);
+            onChange(newTemplate);
+          }
         } catch (error) {
           console.error('Failed to set language:', error);
           // Don't throw the error
         }
       }
     }
+    isInitialMount.current = false;
   }, [language]);
 
   useEffect(() => {

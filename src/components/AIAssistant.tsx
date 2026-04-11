@@ -25,9 +25,9 @@ export function AIAssistant({ code, language, onCodeChange }: AIAssistantProps) 
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const getAssistance = useAction(api.aiActions.getCodeAssistance);
-  const explainCode = useAction(api.aiActions.explainCode);
-  const generateCodeEdit = useAction(api.aiActions.generateCodeEdit);
+  const getAssistance = useAction(api.ai.chat);
+  const explainCodeAction = useAction(api.ai.explainCode);
+  const generateCodeEditAction = useAction(api.ai.generateCode);
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
@@ -38,15 +38,21 @@ export function AIAssistant({ code, language, onCodeChange }: AIAssistantProps) 
     setIsLoading(true);
 
     try {
-      const response = await getAssistance({
-        code,
-        language,
-        question: userMessage,
+      // Map our message history for the AI
+      const apiMessages = messages.map((m) => ({ role: m.role, content: m.content }));
+      
+      const result = await getAssistance({
+        messages: [
+          { role: "system", content: `You are an expert coding assistant helping with ${language} code.` },
+          ...apiMessages,
+          { role: "user", content: `Current Code:\n${code || "None"}\n\nQuestion: ${userMessage}` }
+        ]
       });
 
-      setMessages((prev) => [...prev, { role: "assistant", content: response }]);
-    } catch (error) {
-      toast.error("Failed to get AI assistance");
+      if (!result.success) throw new Error(result.error);
+      setMessages((prev) => [...prev, { role: "assistant", content: result.data || "" }]);
+    } catch (error: any) {
+      toast.error(error.message || "Failed to get AI assistance");
       console.error(error);
     } finally {
       setIsLoading(false);
@@ -60,10 +66,11 @@ export function AIAssistant({ code, language, onCodeChange }: AIAssistantProps) 
     setIsLoading(true);
 
     try {
-      const response = await explainCode({ code, language });
-      setMessages((prev) => [...prev, { role: "assistant", content: response }]);
-    } catch (error) {
-      toast.error("Failed to explain code");
+      const result = await explainCodeAction({ code });
+      if (!result.success) throw new Error(result.error);
+      setMessages((prev) => [...prev, { role: "assistant", content: result.data || "" }]);
+    } catch (error: any) {
+      toast.error(error.message || "Failed to explain code");
       console.error(error);
     } finally {
       setIsLoading(false);
@@ -80,11 +87,12 @@ export function AIAssistant({ code, language, onCodeChange }: AIAssistantProps) 
 
     try {
       toast.info("AI is modifying your code...");
-      const modifiedCode = await generateCodeEdit({
+      const result = await generateCodeEditAction({
         code,
-        language,
-        instruction,
+        prompt: instruction,
       });
+      
+      if (!result.success) throw new Error(result.error);
 
       setMessages((prev) => [
         ...prev,
@@ -92,13 +100,13 @@ export function AIAssistant({ code, language, onCodeChange }: AIAssistantProps) 
           role: "assistant",
           content: "I've generated the modified code. Click 'Apply to Editor' to use it.",
           isCodeEdit: true,
-          editedCode: modifiedCode,
+          editedCode: result.data || "",
         },
       ]);
       
       toast.success("Code modification ready!");
-    } catch (error) {
-      toast.error("Failed to modify code");
+    } catch (error: any) {
+      toast.error(error.message || "Failed to modify code");
       console.error(error);
     } finally {
       setIsLoading(false);

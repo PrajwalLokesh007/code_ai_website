@@ -52,7 +52,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "convex": "^1.31.2",
-    "crud": "link:convex-helpers/server/crud",
+    "convex-helpers": "^0.1.65",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.15.0",
